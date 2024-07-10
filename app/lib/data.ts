@@ -8,17 +8,19 @@ import {
   Revenue,
 } from './definitions';
 import { formatCurrency } from './utils';
-
+// With dynamic rendering, your application is only as fast as your slowest data fetch.
 export async function fetchRevenue() {
   try {
     // Artificially delay a response for demo purposes.
     // Don't do this in production :)
 
-    // console.log('Fetching revenue data...');
-    // await new Promise((resolve) => setTimeout(resolve, 3000));
+    console.log('Fetching revenue data...');
+    await new Promise((resolve) => setTimeout(resolve,5000));
+    console.log("after  resolving")
 
     const data = await sql<Revenue>`SELECT * FROM revenue`;
-
+    console.log(data);
+    
     // console.log('Data fetch completed after 3 seconds.');
 
     return data.rows;
@@ -88,6 +90,7 @@ export async function fetchFilteredInvoices(
   query: string,
   currentPage: number,
 ) {
+  
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
@@ -111,6 +114,7 @@ export async function fetchFilteredInvoices(
       ORDER BY invoices.date DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
+    
 
     return invoices.rows;
   } catch (error) {
